@@ -19,4 +19,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('livros', LivroController::class);
 });
 
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/usuarios', function () {
+        return view('admin.usuarios');
+    })->name('admin.usuarios');
+});
+
 require __DIR__.'/auth.php';
