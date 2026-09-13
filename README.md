@@ -9,6 +9,13 @@ Projetinho de laravel — sistema web para gerenciamento de biblioteca.
 ## Descrição
 
 Sistema de controle de biblioteca desenvolvido em Laravel, permitindo o cadastro e gerenciamento de livros e autores. O sistema possui três níveis de acesso (administrador, bibliotecário e leitor), cada um com permissões diferentes sobre as funcionalidades.
+## Tecnologias utilizadas
+
+- Laravel 11
+- PHP
+- PostgreSQL (hospedado no Neon)
+- Blade
+- Laravel Breeze
 
 ## Funcionalidades
 
