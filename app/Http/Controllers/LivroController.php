@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Livro;
 use App\Models\Autor;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreLivroRequest;
+use App\Http\Requests\UpdateLivroRequest;
 
 class LivroController extends Controller
 {
@@ -20,14 +22,14 @@ class LivroController extends Controller
         return view('livros.create', compact('autores'));
     }
 
-    public function store(Request $request)
-    {
-        $validated = $request->validate(['titulo' => 'required|min:3','isbn' => 'required|unique:livros','quantidade' => 'required|integer|min:0','autor_id' => 'required|exists:autors,id',]);
+   public function store(StoreLivroRequest $request)
+{
+    $validated = $request->validated();
 
-        Livro::create($validated);
+    Livro::create($validated);
 
-        return redirect()->route('livros.index')->with('sucesso', 'Livro cadastrado!');
-    }
+    return redirect()->route('livros.index')->with('sucesso', 'Livro cadastrado!');
+}
 
     public function show(string $id)
     {
