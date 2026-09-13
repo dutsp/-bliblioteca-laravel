@@ -17,19 +17,24 @@ class LivroController extends Controller
     }
 
     public function create()
-    {
-        $autores = Autor::all();
-        return view('livros.create', compact('autores'));
-    }
-
-   public function store(StoreLivroRequest $request)
 {
-    $validated = $request->validated();
 
-    Livro::create($validated);
+    $this->authorize('create', Livro::class);
 
-    return redirect()->route('livros.index')->with('sucesso', 'Livro cadastrado!');
+    $autores = Autor::all();
+    return view('livros.create', compact('autores'));
 }
+
+    public function store(StoreLivroRequest $request)
+    {
+        $this->authorize('create', Livro::class);
+
+        $validated = $request->validated();
+
+        Livro::create($validated);
+
+        return redirect()->route('livros.index')->with('sucesso', 'Livro cadastrado!');
+    }
 
     public function show(string $id)
     {
@@ -37,19 +42,17 @@ class LivroController extends Controller
 
     public function edit(Livro $livro)
     {
+        $this->authorize('update', $livro);
+
         $autores = Autor::all();
         return view('livros.edit', compact('livro', 'autores'));
     }
 
-    public function update(Request $request, Livro $livro)
+    public function update(UpdateLivroRequest $request, Livro $livro)
     {
-        $validated = $request->validate([
-            'titulo' => 'required|min:3',
-            'isbn' => 'required|unique:livros,isbn,' . $livro->id,
-            'quantidade' => 'required|integer|min:0',
-            'autor_id' => 'required|exists:autors,id',
-        ]);
+        $this->authorize('update', $livro);
 
+        $validated = $request->validated();
         $livro->update($validated);
 
         return redirect()->route('livros.index')->with('sucesso', 'Livro atualizado!');
@@ -57,6 +60,8 @@ class LivroController extends Controller
 
     public function destroy(Livro $livro)
     {
+        $this->authorize('delete', $livro);
+
         $livro->delete();
         return redirect()->route('livros.index')->with('sucesso', 'Livro excluído!');
     }
